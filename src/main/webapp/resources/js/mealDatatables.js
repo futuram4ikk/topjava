@@ -17,33 +17,73 @@ function clearFilter() {
 
 $(function () {
     datatableApi = $("#datatable").DataTable({
-        "paging": false,
-        "info": true,
-        "columns": [
+        "ajax": {
+           "url": ajaxUrl,
+           "dataSrc": ""
+        },
+        "paging":false,
+        "info":true,
+
+        "columns":[
             {
-                "data": "dateTime"
+                "data": "dateTime",
+              "render": function (data, type, row) {
+                  data = data.replace('T', ' ');
+                  return data;
+               }
             },
             {
-                "data": "description"
+                "data":"description"
             },
             {
                 "data": "calories"
             },
             {
-                "defaultContent": "Edit",
-                "orderable": false
+                "orderAble":false,
+                "defaultContent":"",
+                "render":renderEditBtn
             },
             {
-                "defaultContent": "Delete",
-                "orderable": false
+                "orderAble":false,
+                "defaultContent": "",
+                "render": renderDeleteBtn
             }
         ],
-        "order": [
-            [
-                0,
-                "desc"
-            ]
-        ]
+        "order": [[
+            0,"desc"
+        ]],
+
+        "createdRow": function (row, data, dataIndex ) {
+            $(row).addClass(data.exceed ? 'exceeded' : 'normal');
+        },
+
+       "initComplete":makeEditable
     });
-    makeEditable();
+});
+$(function () {
+    $('#dateTimePicker').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
+
+    var startDate = $('#startDate');
+    var endDate = $('#endDate');
+    var startTime = $('#startTime');
+    var endTime = $('#endTime');
+    startDate.datetimepicker({
+        timepicker:false,
+       format: 'Y-m-d'
+    });
+    endDate.datetimepicker({
+        timepicker:false,
+        format: 'Y-m-d'
+    });
+    startTime.datetimepicker({
+        datepicker:false,
+        format: 'H:i'
+    });
+    endTime.datetimepicker({
+        datepicker:false,
+        format: 'H:i'
+    });
+
 });

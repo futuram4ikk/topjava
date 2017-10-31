@@ -7,6 +7,7 @@
 <body>
 <script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
 <script type="text/javascript" src="resources/js/mealDatatables.js" defer></script>
+
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <div class="jumbotron">
@@ -25,14 +26,14 @@
                                         code="meals.startDate"/>:</label>
 
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="date" name="startDate" id="startDate">
+                                    <input class="form-control" type="text" name="startDate" id="startDate">
                                 </div>
 
                                 <label class="control-label col-sm-3" for="startTime"><spring:message
                                         code="meals.startTime"/>:</label>
 
                                 <div class="col-sm-3">
-                                    <input class="form-control" type="time" name="startTime" id="startTime">
+                                    <input class="form-control" type="text" name="startTime" id="startTime">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -40,14 +41,14 @@
                                         code="meals.endDate"/>:</label>
 
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="date" name="endDate" id="endDate">
+                                    <input class="form-control" type="text" name="endDate" id="endDate">
                                 </div>
 
                                 <label class="control-label col-sm-3" for="endTime"><spring:message
                                         code="meals.endTime"/>:</label>
 
                                 <div class="col-sm-3">
-                                    <input class="form-control" type="time" name="endTime" id="endTime">
+                                    <input class="form-control" type="text" name="endTime" id="endTime">
                                 </div>
                             </div>
                         </form>
@@ -77,24 +78,6 @@
                         <th></th>
                     </tr>
                     </thead>
-                    <c:forEach items="${meals}" var="meal">
-                        <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
-                        <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
-                            <td>
-                                    <%--<fmt:parseDate value="${meal.dateTime}" pattern="y-M-dd'T'H:m" var="parsedDate"/>--%>
-                                    <%--<fmt:formatDate value="${parsedDate}" pattern="yyyy.MM.dd HH:mm" />--%>
-                                    ${fn:formatDateTime(meal.dateTime)}
-                            </td>
-                            <td>${meal.description}</td>
-                            <td>${meal.calories}</td>
-                            <td><a>
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                            </a></td>
-                            <td><a onclick="deleteRow(${meal.id})">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            </a></td>
-                        </tr>
-                    </c:forEach>
                 </table>
             </div>
         </div>
@@ -107,18 +90,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h2 class="modal-title" id="modalTitle"><spring:message code="meals.add"/></h2>
+                <h2 class="modal-title" id="modalTitle"></h2>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="detailsForm">
                     <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
-                        <label for="dateTime" class="control-label col-xs-3"><spring:message
+                        <label for="dateTimePicker" class="control-label col-xs-3"><spring:message
                                 code="meals.dateTime"/></label>
 
                         <div class="col-xs-9">
-                            <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
+                            <input type="text" class="form-control" id="dateTimePicker" name="dateTime"
                                    placeholder="<spring:message code="meals.dateTime"/>">
                         </div>
                     </div>
@@ -152,4 +135,9 @@
     </div>
 </div>
 </body>
+<jsp:include page="fragments/i18n.jsp"/>
+<script type="text/javascript">
+    i18n['addMeal'] ='<spring:message code="meals.add"/>';
+    i18n['editMeal'] = '<spring:message code="meals.edit"/>';
+</script>
 </html>

@@ -1,6 +1,9 @@
 package ru.javawebinar.topjava.util;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import ru.javawebinar.topjava.model.BaseEntity;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -19,6 +22,16 @@ public class ValidationUtil {
     public static <T> T checkNotFound(T object, String msg) {
         checkNotFound(object != null, msg);
         return object;
+    }
+
+    public static ResponseEntity<String> checkErrors(BindingResult result) {
+        StringBuilder errorDataHolder = new StringBuilder();
+
+        result.getFieldErrors().forEach(fieldError ->
+        errorDataHolder.append(fieldError.getField()).append(" ")
+                       .append(fieldError.getDefaultMessage()).append("</br>"));
+
+            return new ResponseEntity<String>(errorDataHolder.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     public static void checkNotFound(boolean found, String msg) {
